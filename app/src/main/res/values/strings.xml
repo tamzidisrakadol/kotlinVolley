@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DataFetchFromPHP</string>
+    <string name="button">button</string>
 </resources>
