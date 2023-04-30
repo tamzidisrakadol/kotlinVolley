@@ -1,11 +1,17 @@
 package com.example.datafetchfromphp.views
 
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.datafetchfromphp.apiService.ProductService
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.datafetchfromphp.adapter.FakeProductAdapter
+import com.example.datafetchfromphp.network.ProductService
 import com.example.datafetchfromphp.databinding.ActivityReactiveBinding
+import com.example.datafetchfromphp.model.FakeProductModel
+import com.example.datafetchfromphp.utility.Constraints
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -19,6 +25,7 @@ import java.util.concurrent.TimeUnit
 
 class ReactiveActivity : AppCompatActivity() {
     private lateinit var binding: ActivityReactiveBinding
+    private var fakeProductList = mutableListOf<FakeProductModel>()
 
 
 
@@ -26,7 +33,9 @@ class ReactiveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityReactiveBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        simpleObserver()
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+
         implementNetworkCall()
 
 
@@ -65,10 +74,11 @@ class ReactiveActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("CheckResult")
     private fun implementNetworkCall(){
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://fakestoreapi.com")
+            .baseUrl(Constraints.storeUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
@@ -79,7 +89,12 @@ class ReactiveActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())  // upstream + threadpool run on another thread
             .observeOn(AndroidSchedulers.mainThread())  //downStream run on main thread
             .subscribe(){
-                Log.d("product",it.toString())
+                fakeProductList.addAll(it)
+                var adapter = FakeProductAdapter(fakeProductList)
+                binding.recyclerView.adapter = adapter
+                adapter.notifyDataSetChanged()
+
+                Log.d("product","${fakeProductList.size}")
             }
     }
 

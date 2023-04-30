@@ -1,4 +1,4 @@
-package com.example.datafetchfromphp.apiService
+package com.example.datafetchfromphp.network
 
 import com.example.datafetchfromphp.model.FakeProductModel
 import io.reactivex.rxjava3.core.Observable
