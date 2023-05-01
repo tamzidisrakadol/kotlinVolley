@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.datafetchfromphp.databinding.ProductItemLayoutBinding
 import com.example.datafetchfromphp.model.FakeProductModel
 
-class FakeProductAdapter(private val fakeProductList:List<FakeProductModel>):RecyclerView.Adapter<FakeProductAdapter.ViewHolder>() {
+class FakeProductAdapter(private var fakeProductList:List<FakeProductModel>):RecyclerView.Adapter<FakeProductAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ProductItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
 
+    }
+    fun setFilterList(fakeProductList: List<FakeProductModel>){
+        this.fakeProductList = fakeProductList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
