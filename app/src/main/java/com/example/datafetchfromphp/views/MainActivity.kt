@@ -1,15 +1,20 @@
 package com.example.datafetchfromphp.views
 
+import android.content.ContextParams
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.datafetchfromphp.adapter.CustomerAdapter
@@ -22,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -63,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     //collect data from mySql
     private fun fetchCustomerList(){
-        val stringRequest = StringRequest(Request.Method.POST,Constraints.customerURl, {
+        val stringRequest =StringRequest(Request.Method.POST,Constraints.customerURl, {
             try {
                 val jsonArray = JSONArray(it)
                 customerList.clear()
@@ -105,4 +111,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun fakeApiCall(){
+        var stringRequest:StringRequest = object : StringRequest(Request.Method.POST,Constraints.customerURl,Response.Listener {
+
+        },Response.ErrorListener {
+
+        })
+        {
+            override fun getParams(): MutableMap<String, String>? {
+                var map = HashMap<String,String>()
+                map["fakeString"] = "fakeString"
+                return map
+            }
+        }
+        var requestQueue = Volley.newRequestQueue(this)
+        requestQueue.add(stringRequest)
+    }
 }
