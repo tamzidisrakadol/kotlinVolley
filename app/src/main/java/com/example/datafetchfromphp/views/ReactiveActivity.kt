@@ -2,6 +2,8 @@ package com.example.datafetchfromphp.views
 
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +18,8 @@ import com.example.datafetchfromphp.utility.Constraints
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -33,6 +33,7 @@ class ReactiveActivity : AppCompatActivity() {
     private var fakeProductList = mutableListOf<FakeProductModel>()
 
 
+
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +45,14 @@ class ReactiveActivity : AppCompatActivity() {
         implementNetworkCall()
         search()
 
-        binding.button.clicks()
-            .throttleFirst(2000, TimeUnit.MILLISECONDS)  // for delay
-            .subscribe {
-                Log.d("click", "Clicked Sub")
-            }
-
+//        binding.button.clicks()
+//            .throttleFirst(2000, TimeUnit.MILLISECONDS)  // for delay
+//            .subscribe {
+//                Log.d("click", "Clicked Sub")
+//            }
+        binding.button.setOnClickListener {
+            startActivity(Intent(this@ReactiveActivity,LeakActivity::class.java))
+        }
 
     }
 
@@ -173,6 +176,11 @@ class ReactiveActivity : AppCompatActivity() {
         } else {
             adapter.setFilterList(filterList)
         }
+    }
+
+
+    companion object{
+        lateinit var context: Context
     }
 
 }

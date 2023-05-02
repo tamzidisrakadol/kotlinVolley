@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private var customerList = mutableListOf<CustomerModel>()
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         //start effect + loading data
         showShimmerEffect()
-
         //recyclerView layout manager
         binding.recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL,false)
 

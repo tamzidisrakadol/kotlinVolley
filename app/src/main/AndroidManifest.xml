@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.LeakActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.ReactiveActivity"
             android:exported="false" />
         <activity
